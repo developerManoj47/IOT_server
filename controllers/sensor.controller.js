@@ -67,7 +67,7 @@ export const updateActionState = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       is_success: false,
-      error: "Internal server error",
+      error: "INTERNAL_SERVER_ERROR",
       error_message: error.message,
       message: "An error occurred while updating the sensor document",
     });
@@ -75,7 +75,7 @@ export const updateActionState = async (req, res) => {
 };
 
 export const updateSensorData = async (req, res) => {
-  const { sensorData, battery } = req.body;
+  const { sensorData, battery, timestamp } = req.body;
   const { sensor_id } = req.params;
   const errObj = {};
   if (!battery) {
@@ -83,6 +83,9 @@ export const updateSensorData = async (req, res) => {
   }
   if (!sensor_id) {
     errObj["sensor_id"] = "Not provided as params in url";
+  }
+  if (!timestamp) {
+    errObj["timestamp"] = "Not provided";
   }
   if (Object.keys(sensorData).length === 0) {
     errObj["sensorData"] = "Data object have no data";
@@ -101,7 +104,13 @@ export const updateSensorData = async (req, res) => {
   try {
     const updateSensorDataRes = await SensorCol.findByIdAndUpdate(
       sensor_id,
-      { $set: { data: { ...sensorData }, battery: parseInt(battery) } },
+      {
+        $set: {
+          data: { ...sensorData },
+          battery: parseInt(battery),
+          updated_at: timestamp,
+        },
+      },
       { new: true }
     );
 

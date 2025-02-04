@@ -69,6 +69,8 @@ wss.on("connection", (ws) => {
 // Api Endpoints
 import sensorRoute from "./routes/sensor.route.js";
 import authRoute from "./routes/auth.route.js";
+import cameraDeviceRoute from "./routes/cameraDevice.route.js";
+import breachRoute from "./routes/breach.route.js";
 
 app.get("/", (req, res) => {
   res.send("Server is up to date!");
@@ -76,6 +78,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1", authRoute);
 app.use("/api/v1", sensorRoute);
+app.use("/api/v1", cameraDeviceRoute);
+app.use("/api/v1", breachRoute);
 
 // listen to server
 server.listen(port, () => {

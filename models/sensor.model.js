@@ -33,9 +33,12 @@ const SensorSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Mixed,
     default: {},
   },
-  timestamp: {
+  created_at: {
     type: Date,
     default: Date.now,
+  },
+  updated_at: {
+    type: Date,
   },
 });
 
