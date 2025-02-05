@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const SensorSchema = new mongoose.Schema({
-  type: {
+  name: {
     type: String,
     required: true,
   },

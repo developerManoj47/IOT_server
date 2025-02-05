@@ -3,7 +3,7 @@ import BreachCol from "../models/breach.model.js";
 export const postBreach = async (req, res) => {
   const { deviceId, breach, timestamp } = req.body;
   const errObj = {};
-  if (!breach) {
+  if (breach === undefined) {
     errObj["breach"] = "Not provided";
   }
   if (!deviceId) {
@@ -30,7 +30,7 @@ export const postBreach = async (req, res) => {
       // TODO -- start from here
     });
     const newBreachRes = await newBreach.save();
-    return res.status(402).json({
+    return res.status(201).json({
       is_success: true,
       data: newBreachRes,
       message: "New breach added successfully.",
