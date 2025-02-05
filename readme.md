@@ -1,6 +1,8 @@
 # APIs
 
-Base url -> http://localhost:5000/api/v1
+- Base url ->
+  Development - http://localhost:5000/api/v1
+  Production - https://iot-server-ft0b.onrender.com/api/v1
 
 - Get sensor list
   endpoint - /sensor
