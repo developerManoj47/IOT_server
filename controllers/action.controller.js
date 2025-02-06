@@ -21,7 +21,7 @@ export const updateStatusOfAction = async (req, res) => {
   const { currentStatus } = req.body;
   const errObj = {};
   if (currentStatus === undefined) {
-    errObj["breach"] = "Not provided";
+    errObj["currentStatus"] = "Not provided";
   }
   if (!action_id) {
     errObj["action_id"] = "Not provided";
