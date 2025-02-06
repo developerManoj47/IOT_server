@@ -27,7 +27,7 @@ export const updateActionState = async (req, res) => {
   const { currentState } = req.body;
   const { sensor_id } = req.params;
 
-  console.log("current state is : ", currentState);
+  // console.log("current state is : ", currentState);
 
   if (currentState === undefined || !sensor_id) {
     return res.status(400).json({
@@ -151,7 +151,7 @@ export const addNewSensor = async (req, res) => {
     //   },
     //   data: {},
     // };
-    console.log("sensor data is here :", sensorData);
+    // console.log("sensor data is here :", sensorData);
 
     const newSensor = new SensorCol({
       ...sensorData,
