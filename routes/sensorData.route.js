@@ -57,4 +57,54 @@ const postNewSensorData = async (req, res) => {
   } catch (error) {}
 };
 
-router.route("/sensor-data").get(getLatestSensorData).post(postNewSensorData);
+const getSensorDataToDownload = async (req, res) => {
+  try {
+    const currentTime = new Date();
+    const time24HoursAgo = new Date(currentTime - 24 * 60 * 60 * 1000);
+
+    // console.log("time24hoursAgo:", time24HoursAgo.toISOString());
+
+    const sensorDataLast24Hours = await SensorDataCol.aggregate([
+      { $match: { timestamp: { $gte: time24HoursAgo } } },
+      {
+        $group: {
+          _id: "$sensor_id",
+          data: { $push: { data: "$data", timestamp: "$timestamp" } },
+        },
+      },
+      {
+        $lookup: {
+          from: "SensorCol",
+          localField: "_id",
+          foreignField: "_id",
+          as: "sensor_details",
+        },
+      },
+      // {
+      //   $unwind: {
+      //     path: "$sensor_details",
+      //   },
+      // },
+    ]);
+
+    // console.log("Data retrieved from DB:", sensorDataLast24Hours);
+    res.status(200).json({
+      data: sensorDataLast24Hours,
+      message: "Sensor data from the last 24 hours retrieved successfully",
+    });
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({
+      error: "Internal server error",
+      error_message: error.message,
+      message: "Unable to retrieve sensor data",
+    });
+  }
+};
+
+router
+  .route("/sensor-data")
+  .get(getSensorDataToDownload)
+  .post(postNewSensorData);
+
+export default router;

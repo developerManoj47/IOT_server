@@ -1,4 +1,5 @@
 import SensorCol from "../models/sensor.model.js";
+import SensorDataCol from "../models/sensorData.model.js";
 
 export const getSensorData = async (req, res) => {
   try {
@@ -121,6 +122,16 @@ export const updateSensorData = async (req, res) => {
         error_message: `No sensor found with ID: ${sensor_id}`,
       });
     }
+
+    const newSensorData = new SensorDataCol({
+      sensor_id: sensor_id,
+      data: {
+        ...sensorData,
+      },
+      timestamp: timestamp,
+    });
+
+    await newSensorData.save();
 
     res.status(200).json({
       is_success: true,
